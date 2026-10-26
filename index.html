@@ -316,20 +316,6 @@ img { max-width: 100%; }
     </div>
   </section>
 
-  <section class="scene" id="s-hack" data-fx="hack">
-    <div class="inner split">
-      <div class="words">
-        <h2 class="line ar rise d1">بهكرلك حسابك</h2>
-      </div>
-      <div class="media">
-        <div class="term pop" style="--tilt:0deg" aria-hidden="true">
-          <div class="bar"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i></div>
-          <pre id="hackText"></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="scene" id="s-de" data-fx="germany">
     <div class="inner split flip">
       <div class="words">
@@ -426,7 +412,6 @@ img { max-width: 100%; }
     }, speed);
   }
   var KALI = "┌──(malek㉿kali)-[~]\n└─$ kali linux";
-  var HACK = "┌──(malek㉿kali)-[~]\n└─$ بهكرلك حسابك";
   var typed = {};
   function fx(kind, scene) {
     switch (kind) {
@@ -436,7 +421,6 @@ img { max-width: 100%; }
       case "confetti": burst(90); break;
       case "cyan": burst(80, ["#41e8ff", "#8af3ff", "#fff8ee"]); break;
       case "matrix": if (!typed.kali) { typed.kali = 1; typeInto($("kaliText"), KALI, 26); } burst(50, ["#27e67a", "#9affc4"]); break;
-      case "hack": if (!typed.hack) { typed.hack = 1; typeInto($("hackText"), HACK, 30); } burst(50, ["#ff4f9a", "#ffc93c"]); break;
       case "germany": burst(90, ["#111111", "#dd0000", "#ffce00"]); break;
       case "finale":
         song(); fireworks();
