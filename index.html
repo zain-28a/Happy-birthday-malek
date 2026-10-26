@@ -1,0 +1,605 @@
+<title>Happy Birthday Malloktiiii</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Lalezar&family=Rubik:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* Layout: a full-screen scroll story at night. Each inside joke is its own scene;
+   photos and words drift with the scroll, and every scene fires its own party effect. */
+:root {
+  --night: #160a33;
+  --night-2: #0b0420;
+  --pink: #ff4f9a;
+  --gold: #ffc93c;
+  --cyan: #41e8ff;
+  --paper: #fff8ee;
+  --text: #f6f0ff;
+  --muted: #b8ace0;
+  --kali: #27e67a;
+  --de-red: #dd0000;
+  --de-gold: #ffce00;
+  --display: "Bungee", Impact, sans-serif;
+  --arabic: "Lalezar", "Rubik", Tahoma, sans-serif;
+  --body: "Rubik", "Segoe UI", Tahoma, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--night); color: var(--text);
+  font-family: var(--body); font-size: 1.05rem; line-height: 1.6; overflow-x: hidden;
+}
+main { overflow-x: clip; }
+img { max-width: 100%; }
+
+/* progress + music */
+.progress { position: fixed; top: 0; left: 0; height: 5px; width: 0%; z-index: 80;
+  background: linear-gradient(90deg, var(--pink), var(--gold), var(--cyan)); }
+.music {
+  position: fixed; z-index: 70; top: calc(16px + env(safe-area-inset-top, 0px));
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  width: 54px; height: 54px; border-radius: 50%; border: 2px solid rgba(255,255,255,.4);
+  background: rgba(255,255,255,.08); color: var(--text); font-size: 1.5rem; cursor: pointer;
+  backdrop-filter: blur(6px); transition: transform .15s;
+}
+.music:hover { transform: scale(1.08); }
+.music.on { animation: spin 3s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.scroll-cue { position: absolute; bottom: 4vh; left: 50%; transform: translateX(-50%);
+  color: var(--muted); font-size: .9rem; letter-spacing: .2em; text-transform: uppercase;
+  display: grid; justify-items: center; gap: 4px; animation: nudge 1.8s ease-in-out infinite; }
+@keyframes nudge { 50% { transform: translate(-50%, 8px); } }
+
+/* ---------- scenes ---------- */
+.scene {
+  position: relative; min-height: 100vh; display: grid; align-items: center;
+  padding-block: 14vh;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.inner { max-width: 1180px; width: 100%; margin: 0 auto; }
+.split { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(24px, 6vw, 80px); }
+.split.flip > .media { order: -1; }
+.words { min-width: 0; display: grid; gap: 18px; }
+
+.kicker { font-family: var(--mono); color: var(--gold); letter-spacing: .25em; text-transform: uppercase;
+  font-size: .85rem; font-weight: 700; }
+.line { font-family: var(--display); line-height: 1.02; margin: 0; text-wrap: balance;
+  font-size: clamp(2.4rem, 6.2vw, 5rem); }
+.line.ar { font-family: var(--arabic); font-weight: 400; letter-spacing: 0; line-height: 1.12;
+  font-size: clamp(2.8rem, 7.5vw, 6rem); direction: rtl; }
+.caption { color: var(--muted); max-width: 42ch; font-size: 1.1rem; margin: 0; }
+.caption.ar { font-family: var(--arabic); font-size: 1.5rem; color: var(--text); }
+
+/* photo frames */
+.media { min-width: 0; display: grid; justify-items: center; }
+.frame {
+  position: relative; width: min(100%, 440px); border-radius: 18px; overflow: hidden;
+  border: 4px solid rgba(255,255,255,.9); box-shadow: 0 30px 70px rgba(0,0,0,.6);
+  transform: rotate(var(--tilt, -3deg));
+}
+.frame::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 90px rgba(0,0,0,.35); pointer-events: none; }
+.frame img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.frame.wide img { aspect-ratio: 4 / 3; }
+.glowpink { box-shadow: 0 0 0 4px #fff, 0 0 50px 6px var(--pink), 0 30px 70px rgba(0,0,0,.6); }
+.glowcyan { box-shadow: 0 0 0 4px #fff, 0 0 50px 6px var(--cyan), 0 30px 70px rgba(0,0,0,.6); }
+.glowgold { box-shadow: 0 0 0 4px #fff, 0 0 50px 6px var(--gold), 0 30px 70px rgba(0,0,0,.6); }
+
+/* reveal animation */
+.rise { opacity: 0; transform: translateY(46px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
+.rise.in { opacity: 1; transform: none; }
+.rise.d1 { transition-delay: .12s; } .rise.d2 { transition-delay: .24s; } .rise.d3 { transition-delay: .36s; }
+.pop { opacity: 0; transform: scale(.82) rotate(var(--tilt, -3deg)); transition: opacity .8s ease, transform .8s cubic-bezier(.2,1.5,.4,1); }
+.pop.in { opacity: 1; transform: rotate(var(--tilt, -3deg)); }
+
+/* word-by-word text reveal */
+.w2 { display: inline-block; opacity: 0; transform: translateY(22px) rotate(6deg);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.2,1.6,.4,1); }
+.w2.in { opacity: 1; transform: none; }
+
+/* continuous shine + glow */
+@keyframes gradShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.title .l2, .final-title { background-size: 220% 100%; animation: gradShift 5s ease-in-out infinite; }
+@keyframes glowPulse { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.14); } }
+.glowpink, .glowcyan, .glowgold { animation: glowPulse 3.5s ease-in-out infinite; }
+.frame img { transition: transform .7s cubic-bezier(.2,.8,.2,1); }
+.frame:hover img { transform: scale(1.08); }
+.frame.photo-full img { aspect-ratio: auto; height: auto; max-height: 72vh; }
+@keyframes kick { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.kicker { animation: kick 2.6s ease-in-out infinite; }
+
+/* ambient floating sparkles */
+.ambient { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
+.ambient i { position: absolute; bottom: -14px; border-radius: 50%; opacity: 0;
+  box-shadow: 0 0 8px currentColor; animation: floatUp linear infinite; }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(0) scale(.6); }
+  12% { opacity: .55; } 88% { opacity: .55; }
+  100% { opacity: 0; transform: translateY(-114vh) scale(1); }
+}
+
+/* ---------- hero ---------- */
+#hero { background:
+  radial-gradient(1200px 700px at 70% -10%, rgba(255,79,154,.33), transparent 60%),
+  radial-gradient(900px 600px at 10% 110%, rgba(65,232,255,.22), transparent 60%),
+  linear-gradient(180deg, var(--night), var(--night-2)); text-align: center; }
+#hero .inner { display: grid; gap: 22px; justify-items: center; }
+.hello { font-family: var(--mono); color: var(--cyan); letter-spacing: .3em; text-transform: uppercase; font-size: .9rem; }
+.title { font-family: var(--display); margin: 0; line-height: .98; text-wrap: balance;
+  font-size: clamp(2.8rem, 9vw, 7rem); }
+.title .l1 { display: block; color: var(--text); }
+.title .l2 { display: block; background: linear-gradient(90deg, var(--pink), var(--gold));
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+.title .l3 { display: block; color: var(--gold); font-size: .5em; letter-spacing: .04em; }
+.hero-sub { color: var(--muted); max-width: 40ch; margin: 0; }
+.ch { display: inline-block; animation: bob 2.4s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-10px); } }
+.start { margin-top: 6px; border: 0; cursor: pointer; font-family: var(--body); font-weight: 800;
+  font-size: 1.15rem; color: #2a1250; background: linear-gradient(90deg, var(--gold), var(--pink));
+  padding: 14px 32px; border-radius: 999px; box-shadow: 0 10px 30px rgba(255,79,154,.4); transition: transform .15s; }
+.start:hover { transform: translateY(-3px) scale(1.03); }
+
+/* scene tints */
+#s-flash { background: linear-gradient(180deg, var(--night-2), #241046); }
+#s-habib { background: linear-gradient(180deg, #241046, #1a0b3b); }
+#s-amir  { background: radial-gradient(900px 600px at 80% 20%, rgba(255,201,60,.18), transparent 60%), #1a0b3b; }
+#s-nam   { background: linear-gradient(180deg, #1a0b3b, #130a30); }
+#s-mem   { background: radial-gradient(1000px 700px at 20% 80%, rgba(65,232,255,.16), transparent 60%), #130a30; }
+#s-kali  { background: #04100a; }
+#s-hack  { background: #060014; }
+#s-de    { background: #0a0a0a; }
+#s-x1    { background: radial-gradient(900px 600px at 75% 15%, rgba(255,79,154,.18), transparent 60%), #160a33; }
+#s-x2    { background: radial-gradient(900px 600px at 20% 80%, rgba(255,201,60,.16), transparent 60%), #1a0b3b; }
+#s-x3    { background: radial-gradient(1000px 700px at 80% 70%, rgba(65,232,255,.16), transparent 60%), #130a30; }
+#s-final { background:
+  radial-gradient(900px 600px at 50% 0%, rgba(255,79,154,.3), transparent 60%),
+  linear-gradient(180deg, var(--night), var(--night-2)); text-align: center; }
+
+/* flashbang */
+.flashbtn { justify-self: start; border: 2px solid var(--text); background: transparent; color: var(--text);
+  font-family: var(--mono); font-weight: 700; letter-spacing: .1em; padding: 10px 22px; border-radius: 10px;
+  cursor: pointer; transition: transform .12s, background .2s; }
+.flashbtn:hover { background: var(--text); color: var(--night); transform: translateY(-2px); }
+#flash { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 90; }
+#flash.go { animation: bang 1s ease-out; }
+@keyframes bang { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+/* Kali terminal */
+.term { font-family: var(--mono); background: #000; border: 1px solid var(--kali); border-radius: 12px;
+  padding: 18px 20px; box-shadow: 0 0 40px rgba(39,230,122,.25); color: var(--kali);
+  width: min(100%, 560px); min-height: 220px; font-size: .95rem; line-height: 1.7; }
+.term .bar { display: flex; gap: 6px; margin-bottom: 14px; }
+.term .bar i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.term pre { margin: 0; white-space: pre-wrap; word-break: break-word; }
+.cursor { display: inline-block; width: 9px; height: 1.1em; background: var(--kali); vertical-align: -2px;
+  animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+#s-kali .line, #s-hack .line { color: var(--kali); }
+#s-kali .kicker, #s-hack .kicker { color: var(--kali); }
+#s-hack .term { border-color: var(--pink); color: var(--pink); box-shadow: 0 0 40px rgba(255,79,154,.3); }
+#s-hack .cursor { background: var(--pink); }
+
+/* Germany */
+.flag { width: min(100%, 460px); aspect-ratio: 5 / 3; border-radius: 14px; overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0,0,0,.6); display: grid; grid-template-rows: 1fr 1fr 1fr; border: 3px solid rgba(255,255,255,.2); }
+.flag span { display: block; transform: translateX(-110%); }
+.flag.in span { animation: swipe .7s cubic-bezier(.2,.8,.2,1) forwards; }
+.flag.in span:nth-child(2) { animation-delay: .15s; }
+.flag.in span:nth-child(3) { animation-delay: .3s; }
+.flag span:nth-child(1) { background: #111; } .flag span:nth-child(2) { background: var(--de-red); } .flag span:nth-child(3) { background: var(--de-gold); }
+@keyframes swipe { to { transform: none; } }
+#s-de .line { color: var(--de-gold); font-size: clamp(1.9rem, 4.6vw, 3.6rem); }
+#s-de .kicker { color: var(--de-red); }
+
+/* finale */
+#s-finale { background:
+  radial-gradient(900px 600px at 50% 0%, rgba(255,79,154,.3), transparent 60%),
+  linear-gradient(180deg, var(--night), var(--night-2)); text-align: center; }
+#s-finale .inner { display: grid; gap: 22px; justify-items: center; }
+.finale-title { font-family: var(--display); margin: 0; line-height: .98; text-wrap: balance;
+  font-size: clamp(2.8rem, 9vw, 7rem); }
+.finale-title .fl1 { display: block; color: var(--text); }
+.finale-title .fl2 { display: block; background: linear-gradient(90deg, var(--pink), var(--gold));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  background-size: 220% 100%; animation: gradShift 5s ease-in-out infinite; }
+.finale-title .fl3 { display: block; font-size: .5em; letter-spacing: .04em; }
+
+/* balloons */
+.sky { position: fixed; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+.balloon { position: absolute; bottom: -130px; width: 58px; height: 72px; pointer-events: auto; border: 0; padding: 0; cursor: pointer;
+  border-radius: 50% 50% 48% 52% / 58% 58% 42% 42%; background: var(--bc);
+  box-shadow: inset -9px -11px 0 rgba(0,0,0,.14), inset 9px 9px 0 rgba(255,255,255,.28);
+  animation: rise var(--dur) linear forwards, swing 2.6s ease-in-out infinite alternate; }
+.balloon::after { content: ""; position: absolute; top: 100%; left: 50%; width: 2px; height: 52px; background: rgba(255,255,255,.6); }
+@keyframes rise { to { bottom: 114%; } }
+@keyframes swing { from { margin-left: -12px; } to { margin-left: 12px; } }
+
+/* overlays */
+#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 60; }
+
+@media (max-width: 760px) {
+  .split { grid-template-columns: 1fr; gap: 32px; }
+  .split.flip > .media { order: 0; }
+  .frame { width: min(86%, 360px); }
+  .flashbtn, .start { justify-self: center; }
+  .words { justify-items: center; text-align: center; }
+  .caption { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rise, .pop { opacity: 1 !important; transform: none !important; }
+  .ch, .music.on { animation: none; }
+  .flag span { transform: none; }
+}
+</style>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<button class="music" id="music" type="button" aria-label="شغّل الموسيقى">♪</button>
+
+<main>
+  <section class="scene" id="hero">
+    <div class="inner">
+      <h1 class="title rise d1">
+        <span class="l1">Happy Birthday</span>
+        <span class="l2" id="meganame">Malloktiiii</span>
+        <span class="l3" id="emojis"></span>
+      </h1>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"><span>↓</span></div>
+  </section>
+
+  <section class="scene" id="s-flash" data-fx="flash">
+    <div class="inner split">
+      <div class="words">
+        <h2 class="line rise d1">FLASHBANG</h2>
+      </div>
+      <div class="media">
+        <div class="frame pop" style="--tilt:3deg"><img loading="lazy" src="images/2.jpg" alt="صورة مالك عن قرب"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s-habib" data-fx="hearts">
+    <div class="inner split flip">
+      <div class="words">
+        <h2 class="line ar rise d1">حبيب دين أمي</h2>
+      </div>
+      <div class="media">
+        <div class="frame pop glowpink" style="--tilt:-4deg"><img loading="lazy" src="images/6.jpg" alt="مالك ورفيقه بالليل"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s-amir" data-fx="gold">
+    <div class="inner split">
+      <div class="words">
+        <h2 class="line ar rise d1">فطاير الأمير</h2>
+      </div>
+      <div class="media">
+        <div class="frame pop wide glowgold" style="--tilt:3deg"><img loading="lazy" src="images/5.jpg" alt="مالك قدام اللوح"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s-nam" data-fx="confetti">
+    <div class="inner split flip">
+      <div class="words">
+        <h2 class="line ar rise d1">تجي تنام عندي؟</h2>
+      </div>
+      <div class="media">
+        <div class="frame pop wide" style="--tilt:-3deg"><img loading="lazy" src="images/3.jpg" alt="مالك ورفيقه بالصف"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s-mem" data-fx="cyan">
+    <div class="inner split">
+      <div class="words">
+        <h2 class="line rise d1">Maaan, we will<br>make memories</h2>
+      </div>
+      <div class="media">
+        <div class="frame pop wide glowcyan" style="--tilt:4deg"><img loading="lazy" src="images/4.jpg" alt="الشباب عم يحتفلو"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s-kali" data-fx="matrix">
+    <div class="inner split flip">
+      <div class="words">
+        <h2 class="line rise d1">KALI LINUX</h2>
+      </div>
+      <div class="media">
+        <div class="term pop" style="--tilt:0deg" aria-hidden="true">
+          <div class="bar"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i></div>
+          <pre id="kaliText"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s-de" data-fx="germany">
+    <div class="inner split flip">
+      <div class="words">
+        <h2 class="line rise d1">Deutschland<br>ruft dich an</h2>
+      </div>
+      <div class="media">
+        <div class="frame pop photo-full" style="--tilt:-4deg"><img loading="lazy" src="images/7.jpg" alt="مالك ورفيقه"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s-x1" data-fx="hearts">
+    <div class="inner split">
+      <div class="words">
+        <h2 class="line ar rise d1">ممكن ما نحكي على حدا ما منعرفو منيح</h2>
+      </div>
+      <div class="media">
+        <div class="frame pop wide glowpink" style="--tilt:3deg"><img loading="lazy" src="images/8.jpg" alt="مالك ورفيقه"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s-x2" data-fx="gold">
+    <div class="inner split flip">
+      <div class="words">
+        <h2 class="line ar rise d1">مفكر حالك مهرج الغروب</h2>
+      </div>
+      <div class="media">
+        <div class="frame pop glowgold" style="--tilt:-4deg"><img loading="lazy" src="images/9.jpg" alt="مالك"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s-x3" data-fx="cyan">
+    <div class="inner split">
+      <div class="words">
+        <h2 class="line ar rise d1">خود قميصك وطلاع لبرا</h2>
+      </div>
+      <div class="media">
+        <div class="frame pop glowcyan" style="--tilt:4deg"><img loading="lazy" src="images/10.jpg" alt="مالك"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="s-finale" data-fx="finale">
+    <div class="inner">
+      <h2 class="finale-title rise d1">
+        <span class="fl1">Happy Birthday</span>
+        <span class="fl2">Malloktiiii</span>
+        <span class="fl3" id="femojis"></span>
+      </h2>
+    </div>
+  </section>
+</main>
+
+<div id="flash" aria-hidden="true"></div>
+<div class="sky" id="sky" aria-hidden="true"></div>
+<div class="ambient" id="ambient" aria-hidden="true"></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function $(id) { return document.getElementById(id); }
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+
+  /* emoji bob in hero name */
+  var em = "😍😍😍".match(/./gu) || ["😍"];
+  $("emojis").innerHTML = em.map(function (c, i) { return '<span class="ch" style="animation-delay:' + (i * .2) + 's">' + c + '</span>'; }).join("");
+  if ($("femojis")) $("femojis").innerHTML = $("emojis").innerHTML;
+
+  /* ---------- confetti ---------- */
+  var cv = $("confetti"), cx = cv.getContext("2d"), parts = [], running = false;
+  function size() { var d = window.devicePixelRatio || 1; cv.width = innerWidth * d; cv.height = innerHeight * d; cx.setTransform(d, 0, 0, d, 0, 0); }
+  size(); addEventListener("resize", size);
+  function burst(n, colors, originX) {
+    n = reduce ? Math.min(n, 30) : n;
+    var cols = colors || ["#ff4f9a", "#ffc93c", "#41e8ff", "#fff8ee", "#27e67a"];
+    var x = originX === undefined ? innerWidth / 2 : originX;
+    for (var i = 0; i < n; i++) {
+      parts.push({ x: x + rnd(-120, 120), y: rnd(-40, innerHeight * .25),
+        vx: rnd(-3, 3), vy: rnd(1, 5), w: rnd(6, 12), h: rnd(8, 16),
+        a: rnd(0, 6.28), va: rnd(-.25, .25), c: cols[(Math.random() * cols.length) | 0], life: 0 });
+    }
+    if (!running) { running = true; requestAnimationFrame(tick); }
+  }
+  function tick() {
+    cx.clearRect(0, 0, innerWidth, innerHeight);
+    parts = parts.filter(function (p) { return p.y < innerHeight + 40 && p.life < 500; });
+    parts.forEach(function (p) {
+      p.life++; p.vy += .12; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va;
+      cx.save(); cx.translate(p.x, p.y); cx.rotate(p.a); cx.fillStyle = p.c;
+      cx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.a * 2))); cx.restore();
+    });
+    if (parts.length) requestAnimationFrame(tick); else { running = false; cx.clearRect(0, 0, innerWidth, innerHeight); }
+  }
+
+  /* ---------- happy birthday tune ---------- */
+  var actx = null, playing = false;
+  var N = { G4: 392, A4: 440, B4: 493.9, C5: 523.3, D5: 587.3, E5: 659.3, F5: 698.5, G5: 784 };
+  var SONG = [["G4",.75],["G4",.25],["A4",1],["G4",1],["C5",1],["B4",2],["G4",.75],["G4",.25],["A4",1],["G4",1],["D5",1],["C5",2],["G4",.75],["G4",.25],["G5",1],["E5",1],["C5",1],["B4",1],["A4",2],["F5",.75],["F5",.25],["E5",1],["C5",1],["D5",1],["C5",3]];
+  function song() {
+    if (playing) return;
+    try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+    if (actx.state === "suspended") actx.resume();
+    var t = actx.currentTime + .05, beat = .34;
+    SONG.forEach(function (n) {
+      var o = actx.createOscillator(), g = actx.createGain(), d = n[1] * beat;
+      o.type = "triangle"; o.frequency.value = N[n[0]];
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.2, t + .02); g.gain.exponentialRampToValueAtTime(.001, t + d * .95);
+      o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + d); t += d;
+    });
+    playing = true; $("music").classList.add("on");
+    setTimeout(function () { playing = false; $("music").classList.remove("on"); }, (t - actx.currentTime) * 1000);
+  }
+  $("music").addEventListener("click", song);
+
+  /* ---------- reveal + per-scene effects ---------- */
+  function typeInto(el, text, speed, done) {
+    var i = 0; el.textContent = "";
+    var cur = document.createElement("span"); cur.className = "cursor";
+    el.appendChild(cur);
+    if (reduce) { el.textContent = text; if (done) done(); return; }
+    var iv = setInterval(function () {
+      i++; el.textContent = text.slice(0, i); el.appendChild(cur);
+      if (i >= text.length) { clearInterval(iv); if (done) done(); }
+    }, speed);
+  }
+  var KALI = "┌──(malek㉿kali)-[~]\n└─$ kali linux";
+  var typed = {};
+  function fx(kind, scene) {
+    switch (kind) {
+      case "flash": flash(); break;
+      case "hearts": burst(70, ["#ff4f9a", "#ff8ab8", "#fff8ee"]); break;
+      case "gold": burst(80, ["#ffc93c", "#ffe08a", "#fff8ee"]); break;
+      case "confetti": burst(90); break;
+      case "cyan": burst(80, ["#41e8ff", "#8af3ff", "#fff8ee"]); break;
+      case "matrix": if (!typed.kali) { typed.kali = 1; typeInto($("kaliText"), KALI, 26); } burst(50, ["#27e67a", "#9affc4"]); break;
+      case "germany": burst(90, ["#111111", "#dd0000", "#ffce00"]); break;
+      case "finale":
+        song(); fireworks();
+        if (!reduce) {
+          for (var fb = 0; fb < 4; fb++) setTimeout(balloon, fb * 300);
+          if (!window._bt) window._bt = setInterval(balloon, 1100);
+          if (!window._ft) window._ft = setInterval(function () { burst(55, null, rnd(innerWidth * .18, innerWidth * .82)); }, 1500);
+        }
+        break;
+    }
+  }
+  /* split headings + captions into words for staggered reveal */
+  function splitWords(el) {
+    [].slice.call(el.childNodes).forEach(function (node) {
+      if (node.nodeType !== 3) return;
+      var frag = document.createDocumentFragment(), wi = el._wi || 0;
+      node.nodeValue.split(/(\s+)/).forEach(function (tok) {
+        if (tok === "") return;
+        if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
+        var s = document.createElement("span"); s.className = "w2"; s.textContent = tok;
+        s.style.transitionDelay = (wi * 0.05).toFixed(2) + "s"; wi++;
+        frag.appendChild(s);
+      });
+      el._wi = wi; el.replaceChild(frag, node);
+    });
+  }
+  if (!reduce) {
+    document.querySelectorAll(".line, .caption").forEach(function (el) {
+      el.classList.remove("rise", "d1", "d2", "d3");
+      el.style.opacity = "1"; el.style.transform = "none";
+      splitWords(el);
+    });
+  }
+
+  var fired = {};
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.querySelectorAll(".rise, .pop, .w2").forEach(function (el) { el.classList.add("in"); });
+      var scene = e.target.closest ? e.target : null;
+      if (scene && scene.dataset && scene.dataset.fx && e.intersectionRatio > .35 && !fired[scene.id]) {
+        fired[scene.id] = 1; fx(scene.dataset.fx, scene);
+      }
+    });
+  }, { threshold: [.2, .4] });
+  document.querySelectorAll(".scene").forEach(function (s) { io.observe(s); });
+  // hero reveals immediately
+  document.querySelectorAll("#hero .rise").forEach(function (el) { el.classList.add("in"); });
+
+  /* ---------- live motion: idle float + scroll parallax + mouse tilt ---------- */
+  var movers = [].slice.call(document.querySelectorAll(".frame, .term, .flag"));
+  movers.forEach(function (f) {
+    f._tilt = parseFloat(getComputedStyle(f).getPropertyValue("--tilt")) || 0;
+    f._ph = Math.random() * 6.28; f._tx = 0; f._ty = 0; f._inAt = 0; f._spin = 0;
+    f.style.cursor = "pointer";
+    var go = function () { if (!f._spin) f._spin = performance.now(); };
+    f.addEventListener("pointerenter", function (e) { if (e.pointerType !== "touch") go(); });
+    f.addEventListener("pointerdown", go);
+  });
+  var mX = innerWidth / 2, mY = innerHeight / 2, haveMouse = false;
+  addEventListener("pointermove", function (e) {
+    if (e.pointerType === "touch") return;
+    mX = e.clientX; mY = e.clientY; haveMouse = true;
+  }, { passive: true });
+
+  function loop(ts) {
+    var vh = innerHeight, t = ts / 1000;
+    movers.forEach(function (f) {
+      if (!f.classList.contains("in")) return;
+      if (!f._inAt) f._inAt = ts;
+      if (ts - f._inAt < 820) return;               // let the entrance pop finish first
+      var r = f.getBoundingClientRect();
+      if (r.bottom < -100 || r.top > vh + 100) return;
+      var py = ((r.top + r.height / 2 - vh / 2) / vh) * -22;   // scroll parallax
+      var fx = Math.sin(t * 1.25 + f._ph) * 30;                // swing left ↔ right
+      var fy = Math.sin(t * 2.0 + f._ph) * 6;                  // little hop
+      var fr = Math.sin(t * 1.25 + f._ph) * 10;                // pendulum wobble
+      var spin = 0;
+      if (f._spin) {
+        var se = (ts - f._spin) / 900;
+        if (se >= 1) { f._spin = 0; } else { spin = 360 * (1 - Math.pow(1 - se, 3)); }
+      }
+      if (haveMouse) {
+        var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        f._tx += (((mY - cy) / vh) * -8 - f._tx) * 0.07;
+        f._ty += (((mX - cx) / innerWidth) * 10 - f._ty) * 0.07;
+      }
+      f.style.transform = "perspective(1000px) rotateX(" + f._tx.toFixed(2) + "deg) rotateY(" + f._ty.toFixed(2) +
+        "deg) rotate(" + (f._tilt + fr + spin).toFixed(1) + "deg) translate(" + fx.toFixed(1) + "px," + (py + fy).toFixed(1) + "px)";
+    });
+    requestAnimationFrame(loop);
+  }
+  if (!reduce) requestAnimationFrame(loop);
+
+  /* ---------- ambient sparkles ---------- */
+  if (!reduce) {
+    var amb = $("ambient"), ac = ["--pink", "--gold", "--cyan", "--paper"];
+    for (var k = 0; k < 26; k++) {
+      var dot = document.createElement("i"), sz = rnd(4, 9);
+      dot.style.left = rnd(0, 100) + "%"; dot.style.width = sz + "px"; dot.style.height = sz + "px";
+      dot.style.color = getComputedStyle(document.documentElement).getPropertyValue(ac[(Math.random() * ac.length) | 0]).trim();
+      dot.style.background = "currentColor";
+      dot.style.animationDuration = rnd(10, 20) + "s";
+      dot.style.animationDelay = (-rnd(0, 18)).toFixed(1) + "s";
+      amb.appendChild(dot);
+    }
+  }
+
+  /* ---------- progress bar ---------- */
+  function onScroll() {
+    var h = document.documentElement;
+    var p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+    $("progress").style.width = (p * 100).toFixed(1) + "%";
+  }
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- flashbang ---------- */
+  function flash() {
+    var f = $("flash"); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
+    burst(60, ["#ffffff", "#fff8ee", "#ffc93c"]);
+  }
+
+  /* ---------- fireworks + balloons for the finale ---------- */
+  function fireworks() {
+    for (var i = 0; i < 7; i++) {
+      (function (d) { setTimeout(function () { burst(reduce ? 30 : 60, null, rnd(innerWidth * .15, innerWidth * .85)); }, d); })(i * 170);
+    }
+  }
+  function balloon() {
+    if (document.hidden) return;
+    var sky = $("sky"); if (sky.children.length >= 7) return;
+    var bc = ["--pink", "--gold", "--cyan", "--paper"];
+    var b = document.createElement("button"); b.type = "button"; b.className = "balloon"; b.tabIndex = -1;
+    b.style.left = rnd(3, 90) + "%";
+    b.style.setProperty("--bc", "var(" + bc[(Math.random() * bc.length) | 0] + ")");
+    b.style.setProperty("--dur", rnd(9, 15) + "s");
+    b.addEventListener("pointerdown", function (e) { var x = e.clientX; b.remove(); burst(26, null, x); });
+    b.addEventListener("animationend", function () { b.remove(); });
+    sky.appendChild(b);
+  }
+
+  /* opening pop */
+  setTimeout(function () { burst(80); }, 500);
+})();
+</script>
