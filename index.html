@@ -94,6 +94,31 @@ img { max-width: 100%; }
 .pop { opacity: 0; transform: scale(.82) rotate(var(--tilt, -3deg)); transition: opacity .8s ease, transform .8s cubic-bezier(.2,1.5,.4,1); }
 .pop.in { opacity: 1; transform: rotate(var(--tilt, -3deg)); }
 
+/* word-by-word text reveal */
+.w2 { display: inline-block; opacity: 0; transform: translateY(22px) rotate(6deg);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.2,1.6,.4,1); }
+.w2.in { opacity: 1; transform: none; }
+
+/* continuous shine + glow */
+@keyframes gradShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.title .l2, .final-title { background-size: 220% 100%; animation: gradShift 5s ease-in-out infinite; }
+@keyframes glowPulse { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.14); } }
+.glowpink, .glowcyan, .glowgold { animation: glowPulse 3.5s ease-in-out infinite; }
+.frame img { transition: transform .7s cubic-bezier(.2,.8,.2,1); }
+.frame:hover img { transform: scale(1.08); }
+@keyframes kick { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.kicker { animation: kick 2.6s ease-in-out infinite; }
+
+/* ambient floating sparkles */
+.ambient { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
+.ambient i { position: absolute; bottom: -14px; border-radius: 50%; opacity: 0;
+  box-shadow: 0 0 8px currentColor; animation: floatUp linear infinite; }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(0) scale(.6); }
+  12% { opacity: .55; } 88% { opacity: .55; }
+  100% { opacity: 0; transform: translateY(-114vh) scale(1); }
+}
+
 /* ---------- hero ---------- */
 #hero { background:
   radial-gradient(1200px 700px at 70% -10%, rgba(255,79,154,.33), transparent 60%),
@@ -340,6 +365,7 @@ img { max-width: 100%; }
 </main>
 
 <div id="flash" aria-hidden="true"></div>
+<div class="ambient" id="ambient" aria-hidden="true"></div>
 <canvas id="confetti" aria-hidden="true"></canvas>
 
 <script>
@@ -425,11 +451,34 @@ img { max-width: 100%; }
       case "final": burst(reduce ? 40 : 160); song(); break;
     }
   }
+  /* split headings + captions into words for staggered reveal */
+  function splitWords(el) {
+    [].slice.call(el.childNodes).forEach(function (node) {
+      if (node.nodeType !== 3) return;
+      var frag = document.createDocumentFragment(), wi = el._wi || 0;
+      node.nodeValue.split(/(\s+)/).forEach(function (tok) {
+        if (tok === "") return;
+        if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
+        var s = document.createElement("span"); s.className = "w2"; s.textContent = tok;
+        s.style.transitionDelay = (wi * 0.05).toFixed(2) + "s"; wi++;
+        frag.appendChild(s);
+      });
+      el._wi = wi; el.replaceChild(frag, node);
+    });
+  }
+  if (!reduce) {
+    document.querySelectorAll(".line, .caption").forEach(function (el) {
+      el.classList.remove("rise", "d1", "d2", "d3");
+      el.style.opacity = "1"; el.style.transform = "none";
+      splitWords(el);
+    });
+  }
+
   var fired = {};
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (!e.isIntersecting) return;
-      e.target.querySelectorAll(".rise, .pop").forEach(function (el) { el.classList.add("in"); });
+      e.target.querySelectorAll(".rise, .pop, .w2").forEach(function (el) { el.classList.add("in"); });
       var scene = e.target.closest ? e.target : null;
       if (scene && scene.dataset && scene.dataset.fx && e.intersectionRatio > .35 && !fired[scene.id]) {
         fired[scene.id] = 1; fx(scene.dataset.fx, scene);
@@ -440,29 +489,60 @@ img { max-width: 100%; }
   // hero reveals immediately
   document.querySelectorAll("#hero .rise").forEach(function (el) { el.classList.add("in"); });
 
-  /* ---------- parallax on photo frames ---------- */
-  var frames = [].slice.call(document.querySelectorAll(".frame, .term, .flag"));
-  var ticking = false;
-  function parallax() {
-    var vh = innerHeight;
-    frames.forEach(function (f) {
-      var r = f.getBoundingClientRect(), mid = r.top + r.height / 2;
-      var off = (mid - vh / 2) / vh; // -1..1
-      f.style.setProperty("--py", (off * -26).toFixed(1) + "px");
+  /* ---------- live motion: idle float + scroll parallax + mouse tilt ---------- */
+  var movers = [].slice.call(document.querySelectorAll(".frame, .term, .flag"));
+  movers.forEach(function (f) {
+    f._tilt = parseFloat(getComputedStyle(f).getPropertyValue("--tilt")) || 0;
+    f._ph = Math.random() * 6.28; f._tx = 0; f._ty = 0; f._inAt = 0;
+  });
+  var mX = innerWidth / 2, mY = innerHeight / 2, haveMouse = false;
+  addEventListener("pointermove", function (e) {
+    if (e.pointerType === "touch") return;
+    mX = e.clientX; mY = e.clientY; haveMouse = true;
+  }, { passive: true });
+
+  function loop(ts) {
+    var vh = innerHeight, t = ts / 1000;
+    movers.forEach(function (f) {
+      if (!f.classList.contains("in")) return;
+      if (!f._inAt) f._inAt = ts;
+      if (ts - f._inAt < 820) return;               // let the entrance pop finish first
+      var r = f.getBoundingClientRect();
+      if (r.bottom < -100 || r.top > vh + 100) return;
+      var py = ((r.top + r.height / 2 - vh / 2) / vh) * -30;   // scroll parallax
+      var fy = Math.sin(t * 1.1 + f._ph) * 7;                  // gentle bob
+      var fr = Math.sin(t * 0.8 + f._ph) * 1.3;                // gentle wobble
+      if (haveMouse) {
+        var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        f._tx += (((mY - cy) / vh) * -9 - f._tx) * 0.07;
+        f._ty += (((mX - cx) / innerWidth) * 11 - f._ty) * 0.07;
+      }
+      f.style.transform = "perspective(1000px) rotateX(" + f._tx.toFixed(2) + "deg) rotateY(" + f._ty.toFixed(2) +
+        "deg) rotate(" + (f._tilt + fr).toFixed(2) + "deg) translateY(" + (py + fy).toFixed(1) + "px)";
     });
-    ticking = false;
+    requestAnimationFrame(loop);
   }
-  // apply py via transform addition
-  var style = document.createElement("style");
-  style.textContent = ".frame,.term,.flag{transition:transform .5s cubic-bezier(.2,.8,.2,1);} .frame.in{transform:rotate(var(--tilt,-3deg)) translateY(var(--py,0));} .term.in,.flag.in{transform:translateY(var(--py,0));}";
-  if (!reduce) document.head.appendChild(style);
+  if (!reduce) requestAnimationFrame(loop);
+
+  /* ---------- ambient sparkles ---------- */
+  if (!reduce) {
+    var amb = $("ambient"), ac = ["--pink", "--gold", "--cyan", "--paper"];
+    for (var k = 0; k < 26; k++) {
+      var dot = document.createElement("i"), sz = rnd(4, 9);
+      dot.style.left = rnd(0, 100) + "%"; dot.style.width = sz + "px"; dot.style.height = sz + "px";
+      dot.style.color = getComputedStyle(document.documentElement).getPropertyValue(ac[(Math.random() * ac.length) | 0]).trim();
+      dot.style.background = "currentColor";
+      dot.style.animationDuration = rnd(10, 20) + "s";
+      dot.style.animationDelay = (-rnd(0, 18)).toFixed(1) + "s";
+      amb.appendChild(dot);
+    }
+  }
 
   /* ---------- progress bar ---------- */
   function onScroll() {
     var h = document.documentElement;
     var p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
     $("progress").style.width = (p * 100).toFixed(1) + "%";
-    if (!reduce && !ticking) { ticking = true; requestAnimationFrame(parallax); }
   }
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
