@@ -189,17 +189,28 @@ img { max-width: 100%; }
 #s-de .line { color: var(--de-gold); font-size: clamp(1.9rem, 4.6vw, 3.6rem); }
 #s-de .kicker { color: var(--de-red); }
 
-/* final */
-#s-final .inner { display: grid; gap: 22px; justify-items: center; }
-.final-title { font-family: var(--display); margin: 0; font-size: clamp(2.4rem, 7vw, 5rem);
-  background: linear-gradient(90deg, var(--gold), var(--pink), var(--cyan));
-  -webkit-background-clip: text; background-clip: text; color: transparent; }
-.again { border: 0; cursor: pointer; font-family: var(--body); font-weight: 800; font-size: 1.1rem;
-  color: #2a1250; background: var(--gold); padding: 12px 28px; border-radius: 999px; transition: transform .15s; }
-.again:hover { transform: translateY(-3px) scale(1.03); }
-.strip { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 640px; }
-.chip { font-family: var(--mono); font-size: .82rem; color: var(--muted); border: 1px solid rgba(255,255,255,.18);
-  border-radius: 999px; padding: 5px 14px; }
+/* finale */
+#s-finale { background:
+  radial-gradient(900px 600px at 50% 0%, rgba(255,79,154,.3), transparent 60%),
+  linear-gradient(180deg, var(--night), var(--night-2)); text-align: center; }
+#s-finale .inner { display: grid; gap: 22px; justify-items: center; }
+.finale-title { font-family: var(--display); margin: 0; line-height: .98; text-wrap: balance;
+  font-size: clamp(2.8rem, 9vw, 7rem); }
+.finale-title .fl1 { display: block; color: var(--text); }
+.finale-title .fl2 { display: block; background: linear-gradient(90deg, var(--pink), var(--gold));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  background-size: 220% 100%; animation: gradShift 5s ease-in-out infinite; }
+.finale-title .fl3 { display: block; font-size: .5em; letter-spacing: .04em; }
+
+/* balloons */
+.sky { position: fixed; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+.balloon { position: absolute; bottom: -130px; width: 58px; height: 72px; pointer-events: auto; border: 0; padding: 0; cursor: pointer;
+  border-radius: 50% 50% 48% 52% / 58% 58% 42% 42%; background: var(--bc);
+  box-shadow: inset -9px -11px 0 rgba(0,0,0,.14), inset 9px 9px 0 rgba(255,255,255,.28);
+  animation: rise var(--dur) linear forwards, swing 2.6s ease-in-out infinite alternate; }
+.balloon::after { content: ""; position: absolute; top: 100%; left: 50%; width: 2px; height: 52px; background: rgba(255,255,255,.6); }
+@keyframes rise { to { bottom: 114%; } }
+@keyframes swing { from { margin-left: -12px; } to { margin-left: 12px; } }
 
 /* overlays */
 #confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 60; }
@@ -221,7 +232,7 @@ img { max-width: 100%; }
 </style>
 
 <div class="progress" id="progress" aria-hidden="true"></div>
-<button class="music" id="music" type="button" aria-label="شغّل الموسيقى">🎵</button>
+<button class="music" id="music" type="button" aria-label="شغّل الموسيقى">♪</button>
 
 <main>
   <section class="scene" id="hero">
@@ -231,16 +242,14 @@ img { max-width: 100%; }
         <span class="l2" id="meganame">Malloktiiii</span>
         <span class="l3" id="emojis"></span>
       </h1>
-      <button class="start rise d3" id="start" type="button">يلا نبلّش</button>
     </div>
-    <div class="scroll-cue" aria-hidden="true"><span>scroll</span><span>↓</span></div>
+    <div class="scroll-cue" aria-hidden="true"><span>↓</span></div>
   </section>
 
   <section class="scene" id="s-flash" data-fx="flash">
     <div class="inner split">
       <div class="words">
         <h2 class="line rise d1">FLASHBANG</h2>
-        <button class="flashbtn rise d2" id="flashbtn" type="button">رمي الفلاشبانغ</button>
       </div>
       <div class="media">
         <div class="frame pop" style="--tilt:3deg"><img loading="lazy" src="images/2.jpg" alt="صورة مالك عن قرب"></div>
@@ -331,15 +340,19 @@ img { max-width: 100%; }
     </div>
   </section>
 
-  <section class="scene" id="s-final" data-fx="final">
+  <section class="scene" id="s-finale" data-fx="finale">
     <div class="inner">
-      <h2 class="final-title rise d1">كل سنة وإنت سالم يا مالك</h2>
-      <button class="again rise d3" id="again" type="button">رجّعها من الأول</button>
+      <h2 class="finale-title rise d1">
+        <span class="fl1">Happy Birthday</span>
+        <span class="fl2">Malloktiiii</span>
+        <span class="fl3" id="femojis"></span>
+      </h2>
     </div>
   </section>
 </main>
 
 <div id="flash" aria-hidden="true"></div>
+<div class="sky" id="sky" aria-hidden="true"></div>
 <div class="ambient" id="ambient" aria-hidden="true"></div>
 <canvas id="confetti" aria-hidden="true"></canvas>
 
@@ -352,6 +365,7 @@ img { max-width: 100%; }
   /* emoji bob in hero name */
   var em = "😍😍😍".match(/./gu) || ["😍"];
   $("emojis").innerHTML = em.map(function (c, i) { return '<span class="ch" style="animation-delay:' + (i * .2) + 's">' + c + '</span>'; }).join("");
+  if ($("femojis")) $("femojis").innerHTML = $("emojis").innerHTML;
 
   /* ---------- confetti ---------- */
   var cv = $("confetti"), cx = cv.getContext("2d"), parts = [], running = false;
@@ -415,7 +429,7 @@ img { max-width: 100%; }
   var typed = {};
   function fx(kind, scene) {
     switch (kind) {
-      case "flash": break;
+      case "flash": flash(); break;
       case "hearts": burst(70, ["#ff4f9a", "#ff8ab8", "#fff8ee"]); break;
       case "gold": burst(80, ["#ffc93c", "#ffe08a", "#fff8ee"]); break;
       case "confetti": burst(90); break;
@@ -423,7 +437,14 @@ img { max-width: 100%; }
       case "matrix": if (!typed.kali) { typed.kali = 1; typeInto($("kaliText"), KALI, 26); } burst(50, ["#27e67a", "#9affc4"]); break;
       case "hack": if (!typed.hack) { typed.hack = 1; typeInto($("hackText"), HACK, 30); } burst(50, ["#ff4f9a", "#ffc93c"]); break;
       case "germany": $("flag").classList.add("in"); burst(90, ["#111111", "#dd0000", "#ffce00"]); break;
-      case "final": burst(reduce ? 40 : 160); song(); break;
+      case "finale":
+        song(); fireworks();
+        if (!reduce) {
+          for (var fb = 0; fb < 4; fb++) setTimeout(balloon, fb * 300);
+          if (!window._bt) window._bt = setInterval(balloon, 1100);
+          if (!window._ft) window._ft = setInterval(function () { burst(55, null, rnd(innerWidth * .18, innerWidth * .82)); }, 1500);
+        }
+        break;
     }
   }
   /* split headings + captions into words for staggered reveal */
@@ -537,16 +558,25 @@ img { max-width: 100%; }
     var f = $("flash"); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
     burst(60, ["#ffffff", "#fff8ee", "#ffc93c"]);
   }
-  $("flashbtn").addEventListener("click", flash);
 
-  /* ---------- hero buttons ---------- */
-  $("start").addEventListener("click", function () {
-    song(); burst(120);
-    var fl = $("s-flash"); if (fl) fl.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
-  });
-  $("again").addEventListener("click", function () {
-    scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
-  });
+  /* ---------- fireworks + balloons for the finale ---------- */
+  function fireworks() {
+    for (var i = 0; i < 7; i++) {
+      (function (d) { setTimeout(function () { burst(reduce ? 30 : 60, null, rnd(innerWidth * .15, innerWidth * .85)); }, d); })(i * 170);
+    }
+  }
+  function balloon() {
+    if (document.hidden) return;
+    var sky = $("sky"); if (sky.children.length >= 7) return;
+    var bc = ["--pink", "--gold", "--cyan", "--paper"];
+    var b = document.createElement("button"); b.type = "button"; b.className = "balloon"; b.tabIndex = -1;
+    b.style.left = rnd(3, 90) + "%";
+    b.style.setProperty("--bc", "var(" + bc[(Math.random() * bc.length) | 0] + ")");
+    b.style.setProperty("--dur", rnd(9, 15) + "s");
+    b.addEventListener("pointerdown", function (e) { var x = e.clientX; b.remove(); burst(26, null, x); });
+    b.addEventListener("animationend", function () { b.remove(); });
+    sky.appendChild(b);
+  }
 
   /* opening pop */
   setTimeout(function () { burst(80); }, 500);
