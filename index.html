@@ -106,6 +106,7 @@ img { max-width: 100%; }
 .glowpink, .glowcyan, .glowgold { animation: glowPulse 3.5s ease-in-out infinite; }
 .frame img { transition: transform .7s cubic-bezier(.2,.8,.2,1); }
 .frame:hover img { transform: scale(1.08); }
+.frame.photo-full img { aspect-ratio: auto; height: auto; max-height: 72vh; }
 @keyframes kick { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 .kicker { animation: kick 2.6s ease-in-out infinite; }
 
@@ -335,7 +336,7 @@ img { max-width: 100%; }
         <h2 class="line rise d1">Deutschland<br>ruft dich an</h2>
       </div>
       <div class="media">
-        <div class="flag pop" id="flag"><span></span><span></span><span></span></div>
+        <div class="frame pop photo-full" style="--tilt:-4deg"><img loading="lazy" src="images/7.jpg" alt="مالك ورفيقه"></div>
       </div>
     </div>
   </section>
@@ -436,7 +437,7 @@ img { max-width: 100%; }
       case "cyan": burst(80, ["#41e8ff", "#8af3ff", "#fff8ee"]); break;
       case "matrix": if (!typed.kali) { typed.kali = 1; typeInto($("kaliText"), KALI, 26); } burst(50, ["#27e67a", "#9affc4"]); break;
       case "hack": if (!typed.hack) { typed.hack = 1; typeInto($("hackText"), HACK, 30); } burst(50, ["#ff4f9a", "#ffc93c"]); break;
-      case "germany": $("flag").classList.add("in"); burst(90, ["#111111", "#dd0000", "#ffce00"]); break;
+      case "germany": burst(90, ["#111111", "#dd0000", "#ffce00"]); break;
       case "finale":
         song(); fireworks();
         if (!reduce) {
