@@ -69,7 +69,7 @@ img { max-width: 100%; }
 .line { font-family: var(--display); line-height: 1.02; margin: 0; text-wrap: balance;
   font-size: clamp(2.4rem, 6.2vw, 5rem); }
 .line.ar { font-family: var(--arabic); font-weight: 400; letter-spacing: 0; line-height: 1.12;
-  font-size: clamp(2.8rem, 7.5vw, 6rem); }
+  font-size: clamp(2.8rem, 7.5vw, 6rem); direction: rtl; }
 .caption { color: var(--muted); max-width: 42ch; font-size: 1.1rem; margin: 0; }
 .caption.ar { font-family: var(--arabic); font-size: 1.5rem; color: var(--text); }
 
@@ -226,14 +226,12 @@ img { max-width: 100%; }
 <main>
   <section class="scene" id="hero">
     <div class="inner">
-      <p class="hello rise">🎂 26 · 10 · 2026</p>
       <h1 class="title rise d1">
         <span class="l1">Happy Birthday</span>
         <span class="l2" id="meganame">Malloktiiii</span>
         <span class="l3" id="emojis"></span>
       </h1>
-      <p class="hero-sub rise d2">نزّل تحت… كل مشهد إلو قصة بينا وبينك 👇</p>
-      <button class="start rise d3" id="start" type="button">يلا نبلّش 🎉</button>
+      <button class="start rise d3" id="start" type="button">يلا نبلّش</button>
     </div>
     <div class="scroll-cue" aria-hidden="true"><span>scroll</span><span>↓</span></div>
   </section>
@@ -241,10 +239,8 @@ img { max-width: 100%; }
   <section class="scene" id="s-flash" data-fx="flash">
     <div class="inner split">
       <div class="words">
-        <p class="kicker rise">Scene 01</p>
         <h2 class="line rise d1">FLASHBANG</h2>
-        <p class="caption rise d2">كبسة وحدة وبتعمى الكاميرا. اضغط الزر وشوف 😎</p>
-        <button class="flashbtn rise d2" id="flashbtn" type="button">💥 رمي الفلاشبانغ</button>
+        <button class="flashbtn rise d2" id="flashbtn" type="button">رمي الفلاشبانغ</button>
       </div>
       <div class="media">
         <div class="frame pop" style="--tilt:3deg"><img loading="lazy" src="images/2.jpg" alt="صورة مالك عن قرب"></div>
@@ -255,9 +251,7 @@ img { max-width: 100%; }
   <section class="scene" id="s-habib" data-fx="hearts">
     <div class="inner split flip">
       <div class="words">
-        <p class="kicker rise">Scene 02</p>
-        <h2 class="line ar rise d1">حبيب دين أمي 🤍</h2>
-        <p class="caption ar rise d2">الرفيق اللي أمي صارت تسأل عنه قبل ما تسأل عني.</p>
+        <h2 class="line ar rise d1">حبيب دين أمي</h2>
       </div>
       <div class="media">
         <div class="frame pop glowpink" style="--tilt:-4deg"><img loading="lazy" src="images/6.jpg" alt="مالك ورفيقه بالليل"></div>
@@ -268,9 +262,7 @@ img { max-width: 100%; }
   <section class="scene" id="s-amir" data-fx="gold">
     <div class="inner split">
       <div class="words">
-        <p class="kicker rise">Scene 03</p>
-        <h2 class="line ar rise d1">فطاير الأمير 👑</h2>
-        <p class="caption ar rise d2">الأمير اللي ما بيعزم على غدا، بيعزم على ذكريات بس 😂</p>
+        <h2 class="line ar rise d1">فطاير الأمير</h2>
       </div>
       <div class="media">
         <div class="frame pop wide glowgold" style="--tilt:3deg"><img loading="lazy" src="images/5.jpg" alt="مالك قدام اللوح"></div>
@@ -281,9 +273,7 @@ img { max-width: 100%; }
   <section class="scene" id="s-nam" data-fx="confetti">
     <div class="inner split flip">
       <div class="words">
-        <p class="kicker rise">Scene 04</p>
-        <h2 class="line ar rise d1">تجي تنام عندي؟ 🌙</h2>
-        <p class="caption ar rise d2">الجملة اللي بتبلّش فيها السهرة وما بتخلص قبل الفجر.</p>
+        <h2 class="line ar rise d1">تجي تنام عندي؟</h2>
       </div>
       <div class="media">
         <div class="frame pop wide" style="--tilt:-3deg"><img loading="lazy" src="images/3.jpg" alt="مالك ورفيقه بالصف"></div>
@@ -294,9 +284,7 @@ img { max-width: 100%; }
   <section class="scene" id="s-mem" data-fx="cyan">
     <div class="inner split">
       <div class="words">
-        <p class="kicker rise">Scene 05</p>
         <h2 class="line rise d1">Maaan, we will<br>make memories</h2>
-        <p class="caption rise d2">هي بس البداية. اللي جاي أحلى، وعد 🤝</p>
       </div>
       <div class="media">
         <div class="frame pop wide glowcyan" style="--tilt:4deg"><img loading="lazy" src="images/4.jpg" alt="الشباب عم يحتفلو"></div>
@@ -307,9 +295,7 @@ img { max-width: 100%; }
   <section class="scene" id="s-kali" data-fx="matrix">
     <div class="inner split flip">
       <div class="words">
-        <p class="kicker rise">Scene 06</p>
         <h2 class="line rise d1">KALI LINUX</h2>
-        <p class="caption rise d2" style="color:var(--kali)">المستخدم الوحيد اللي بيفتح الترمينال عشان يحسّ حالو هاكر 🐉</p>
       </div>
       <div class="media">
         <div class="term pop" style="--tilt:0deg" aria-hidden="true">
@@ -323,9 +309,7 @@ img { max-width: 100%; }
   <section class="scene" id="s-hack" data-fx="hack">
     <div class="inner split">
       <div class="words">
-        <p class="kicker rise">Scene 07</p>
-        <h2 class="line ar rise d1">بهكرلك حسابك 😈</h2>
-        <p class="caption ar rise d2" style="color:var(--pink)">تهديد فاضي من سنين… لليوم ما قدر يحزر الباسوورد 😂</p>
+        <h2 class="line ar rise d1">بهكرلك حسابك</h2>
       </div>
       <div class="media">
         <div class="term pop" style="--tilt:0deg" aria-hidden="true">
@@ -339,9 +323,7 @@ img { max-width: 100%; }
   <section class="scene" id="s-de" data-fx="germany">
     <div class="inner split flip">
       <div class="words">
-        <p class="kicker rise">Scene 08</p>
         <h2 class="line rise d1">Deutschland<br>ruft dich an</h2>
-        <p class="caption rise d2">🇩🇪 ألمانيا عم تناديك… جهّز الشنطة يا صاحبي.</p>
       </div>
       <div class="media">
         <div class="flag pop" id="flag"><span></span><span></span><span></span></div>
@@ -351,15 +333,8 @@ img { max-width: 100%; }
 
   <section class="scene" id="s-final" data-fx="final">
     <div class="inner">
-      <p class="hello rise">آخر مشهد</p>
-      <h2 class="final-title rise d1">كل سنة وإنت سالم يا مالك 🎂</h2>
-      <p class="hero-sub rise d2">صفحة صغيرة فيها ذكرياتنا ونكاتنا السخيفة. منحبك يا وحش 🤍</p>
-      <div class="strip rise d2" aria-hidden="true">
-        <span class="chip">Flashbang</span><span class="chip">حبيب دين أمي</span><span class="chip">فطاير الأمير</span>
-        <span class="chip">تجي تنام عندي</span><span class="chip">make memories</span><span class="chip">Kali Linux</span>
-        <span class="chip">بهكرلك حسابك</span><span class="chip">Deutschland 🇩🇪</span>
-      </div>
-      <button class="again rise d3" id="again" type="button">🎉 رجّعها من الأول</button>
+      <h2 class="final-title rise d1">كل سنة وإنت سالم يا مالك</h2>
+      <button class="again rise d3" id="again" type="button">رجّعها من الأول</button>
     </div>
   </section>
 </main>
@@ -435,8 +410,8 @@ img { max-width: 100%; }
       if (i >= text.length) { clearInterval(iv); if (done) done(); }
     }, speed);
   }
-  var KALI = "┌──(malek㉿kali)-[~]\n└─$ sudo party --birthday\n[✓] loading friendship.exe\n[✓] 26 candles detected 🎂\n[✓] access granted: LEGEND";
-  var HACK = "┌──(malek㉿kali)-[~]\n└─$ hack @malek --account\n[*] trying password...\n[*] '123456'  ❌\n[*] 'malek2026' ❌\n[!] محمي كتير 😤 بطّلنا 😂";
+  var KALI = "┌──(malek㉿kali)-[~]\n└─$ kali linux";
+  var HACK = "┌──(malek㉿kali)-[~]\n└─$ بهكرلك حسابك";
   var typed = {};
   function fx(kind, scene) {
     switch (kind) {
@@ -493,7 +468,11 @@ img { max-width: 100%; }
   var movers = [].slice.call(document.querySelectorAll(".frame, .term, .flag"));
   movers.forEach(function (f) {
     f._tilt = parseFloat(getComputedStyle(f).getPropertyValue("--tilt")) || 0;
-    f._ph = Math.random() * 6.28; f._tx = 0; f._ty = 0; f._inAt = 0;
+    f._ph = Math.random() * 6.28; f._tx = 0; f._ty = 0; f._inAt = 0; f._spin = 0;
+    f.style.cursor = "pointer";
+    var go = function () { if (!f._spin) f._spin = performance.now(); };
+    f.addEventListener("pointerenter", function (e) { if (e.pointerType !== "touch") go(); });
+    f.addEventListener("pointerdown", go);
   });
   var mX = innerWidth / 2, mY = innerHeight / 2, haveMouse = false;
   addEventListener("pointermove", function (e) {
@@ -509,16 +488,22 @@ img { max-width: 100%; }
       if (ts - f._inAt < 820) return;               // let the entrance pop finish first
       var r = f.getBoundingClientRect();
       if (r.bottom < -100 || r.top > vh + 100) return;
-      var py = ((r.top + r.height / 2 - vh / 2) / vh) * -30;   // scroll parallax
-      var fy = Math.sin(t * 1.1 + f._ph) * 7;                  // gentle bob
-      var fr = Math.sin(t * 0.8 + f._ph) * 1.3;                // gentle wobble
+      var py = ((r.top + r.height / 2 - vh / 2) / vh) * -22;   // scroll parallax
+      var fx = Math.sin(t * 1.25 + f._ph) * 30;                // swing left ↔ right
+      var fy = Math.sin(t * 2.0 + f._ph) * 6;                  // little hop
+      var fr = Math.sin(t * 1.25 + f._ph) * 10;                // pendulum wobble
+      var spin = 0;
+      if (f._spin) {
+        var se = (ts - f._spin) / 900;
+        if (se >= 1) { f._spin = 0; } else { spin = 360 * (1 - Math.pow(1 - se, 3)); }
+      }
       if (haveMouse) {
         var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-        f._tx += (((mY - cy) / vh) * -9 - f._tx) * 0.07;
-        f._ty += (((mX - cx) / innerWidth) * 11 - f._ty) * 0.07;
+        f._tx += (((mY - cy) / vh) * -8 - f._tx) * 0.07;
+        f._ty += (((mX - cx) / innerWidth) * 10 - f._ty) * 0.07;
       }
       f.style.transform = "perspective(1000px) rotateX(" + f._tx.toFixed(2) + "deg) rotateY(" + f._ty.toFixed(2) +
-        "deg) rotate(" + (f._tilt + fr).toFixed(2) + "deg) translateY(" + (py + fy).toFixed(1) + "px)";
+        "deg) rotate(" + (f._tilt + fr + spin).toFixed(1) + "deg) translate(" + fx.toFixed(1) + "px," + (py + fy).toFixed(1) + "px)";
     });
     requestAnimationFrame(loop);
   }
